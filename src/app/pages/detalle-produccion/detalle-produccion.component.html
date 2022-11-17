@@ -1,0 +1,677 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+  <div class="col-md-5 align-self-center">
+    <h3 class="text-themecolor">Administrar producción</h3>
+  </div>
+  <div class="col-md-7 align-self-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/producciones']" routerLinkActive="router-link-active">Producciones</a>
+      </li>
+      <li class="breadcrumb-item active">Administrar producción</li>
+    </ol>
+  </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<hr>
+<h1 class="text-center mt-5 mb-5">Administrar producción</h1>
+<!-- <div class="" *ngIf="produccionActiva"> -->
+
+<div class="" *ngIf="produccionActiva">
+  <div class="row justify-content-center">
+    <div class="col-lg-3">
+      <div class="card" data-toggle="modal" data-target="#modalGramaje" style="cursor: pointer;"
+        (click)="accion = 'Registrar'; gramaje.datos = []">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                src="../assets/images/icon/income.png" alt="Income" /></div>
+            <div class="align-self-center">
+              <h6 class="text-muted m-t-10 m-b-0">Gramaje</h6>
+            <!--  <h6 class="m-t-0 mt-1"><strong>Costo total:</strong> ${{costos.costo_gramaje}}</h6>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="card" data-toggle="modal" data-target="#modalBiomasa" style="cursor: pointer;"
+        (click)="accion = 'Registrar'; biomasa.datos = []">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                src="../assets/images/icon/income.png" alt="Income" /></div>
+            <div class="align-self-center">
+              <h6 class="text-muted m-t-10 m-b-0">Biomasa</h6>
+            <!--  <h6 class="m-t-0 mt-1"><strong>Costo total:</strong> ${{costos.costo_biomasa}}</h6>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="card" data-toggle="modal" data-target="#modalAlimento" style="cursor: pointer;"
+        (click)="accion = 'Registrar'">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                src="../assets/images/icon/income.png" alt="Income" /></div>
+            <div class="align-self-center">
+              <h6 class="text-muted m-t-10 m-b-0">Alimento</h6>
+              <!-- <h6 class="m-t-0 mt-1"><strong>Costo total:</strong> ${{costos.costo_alimento}}</h6> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row justify-content-center"> 
+  <div class="col-9">
+    <div class="card">
+      <div class="card-body">
+        <span class="lstick m-r-20"></span>
+
+        <strong>Costo larva:</strong> ${{costo_larva}} <br>
+        <span class="lstick m-r-20"></span>
+        <strong>Costo Alimento:</strong> ${{costos.costo_alimento}} <br>
+        <!-- <strong>Costo Biomasa + Alimento + Gramaje:</strong> ${{costos.costo_alimento + costos.costo_biomasa + costos.costo_gramaje}} <br>-->
+      <strong>Libras de camarones pronosticadas:</strong> {{cantidadPromedioCamarones}} lbs <br>
+      <span class="lstick m-r-20"></span>
+
+      <strong>Total Gasto Producción:</strong> ${{costos.costo_alimento + costo_larva}} 
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <!-- <button class="btn btn-dark float-right" (click)="export()">Generar Reporte</button> -->
+      <button class="btn btn-dark float-right" data-toggle="modal" data-target="#modalReporte"
+        style="cursor: pointer;">Generar Reporte</button>
+
+    </div>
+    
+  </div>
+
+</div>
+
+
+<div class='demo-app'>
+  <div class='demo-app-main'>
+    <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'></full-calendar>
+  </div>
+
+</div>
+
+
+<!-- Modal BIOMASA -->
+<div class="modal fade " id="modalBiomasa" tabindex="-1" role="dialog" aria-labelledby="modalBiomasaLabel"
+  aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalBiomasaLabel">Registro de Biomasa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <!-- <div class="col mt-3 mb-3" *ngIf="!mostrarIngresoDatos">
+        <button type="button" class="btn btn-dark btn-sm float-right" (click)="mostrar()">
+          Ingresar Dato +</button>
+      </div> -->
+      <div class="clearfix"></div>
+      <div class="modal-body">
+        <form class="card" #biomasaForm="ngForm">
+
+          <!-- datossss -->
+          <div class="row" *ngIf="mostrarIngresoDatos">
+            <div class="col-7 mt-2">
+              <div class="form-group">
+                <input type="number" class="form-control form-control-sm" id="cantidad" [(ngModel)]="cantidad"
+                  [ngModelOptions]="{standalone: true}" placeholder="Cantidad" required>
+              </div>
+            </div>
+            <div class="col mt-2">
+              <div class="form-group">
+                <button type="button" class="btn btn-success btn-sm ml-2 " (click)="obtenerDato()"> Agregar</button>
+                <button type="button" class="btn btn-danger btn-sm ml-2 " (click)="mostrar()">Cerrar </button>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- fin datooooos -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="responsable">Responsable del registro</label>
+                <input type="text" class="form-control" id="responsable" name="responsable" #responsable="ngModel"
+                  [(ngModel)]="biomasa.responsable" required disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mt-2">
+              <!-- <h5>Resumen de datos</h5> -->
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" #fecha="ngModel" min="{{fecha_actual}}"
+                  [(ngModel)]="biomasa.fecha" required>
+              </div>
+            </div>
+           
+          </div>
+          <div class="row">
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="area">Area de red  m²</label>
+                <input type="text" class="form-control" id="area" placeholder="42.6" name="area_red" #area_red="ngModel"
+                  [(ngModel)]="biomasa.area_red" required>
+              </div>
+            </div>
+            <!-- <div class="col mt-2">
+
+              <div class="form-group">
+                <label for="cantidad_camarones">Cant camarones</label>
+                <input type="text" class="form-control" id="cantidad_camarones" placeholder="450550"
+                  name="cantidad_camarones" #cantidad_camarones="ngModel" [(ngModel)]="biomasa.cantidad_camarones"
+                  required>
+              </div>
+            </div> -->
+         
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="dias_siembra">Dias siembra</label>
+                <input type="text" class="form-control" id="dias_siembra" placeholder="5" name="dias_siembra"
+                #dias_siembra="ngModel" [(ngModel)]="biomasa.dias_siembra" required>
+              </div>
+            </div>
+          </div>
+           <!-- <div class="col mt-2">
+              <div class="form-group">
+                <label for="costo">Costo</label>
+                <input type="number" class="form-control" id="costo" placeholder="24.2" name="costo"
+                  #costo="ngModel" [(ngModel)]="biomasa.costo" required>
+              </div>
+            </div> -->
+
+
+          <div class="form-group">
+            <label for="detalle">Detalle</label>
+            <textarea class="form-control" id="detalle" rows="6" placeholder="(Opcional)" name="detalle"
+              #detalle="ngModel" [(ngModel)]="biomasa.detalle"></textarea>
+          </div>
+
+
+          <!-- <button type="submit" class="btn btn-primary"[disabled]="biomasaForm.invalid">Registrar</button> -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="accion == 'Registrar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="biomasaForm.invalid" (click)="guardarBiomasa()">Guardar Registro</button>
+        <button *ngIf="accion == 'Editar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="biomasaForm.invalid" (click)="editarBiomasa()">Editar Registro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal GRAMAJE -->
+<div class="modal fade " id="modalGramaje" tabindex="-1" role="dialog" aria-labelledby="modalGramajeLabel"
+  aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalGramajeLabel">Registro de Gramaje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <!-- <div class="col mt-3 mb-4" *ngIf="!mostrarIngresoDatos">
+        <button type="button" class="btn btn-dark btn-sm float-right" (click)="mostrar()">
+          Ingresar Dato +</button>
+      </div> -->
+      <div class="clearfix"></div>
+      <div class="modal-body">
+        <form class="card" #gramajeForm="ngForm">
+
+          <!-- datossss -->
+          <div class="row" *ngIf="mostrarIngresoDatos">
+            <div class="col-8 mt-2">
+              <div class="form-group">
+                <input type="number" class="col-5 form-control form-control-sm mr-2" id="cantidadGramaje"
+                  [(ngModel)]="cantidadGramaje" [ngModelOptions]="{standalone: true}" placeholder="Cantidad" required>
+                <input type="number" class="col-5 form-control form-control-sm" id="pesoGramaje"
+                  [(ngModel)]="pesoGramaje" [ngModelOptions]="{standalone: true}" placeholder="Peso" required>
+
+              </div>
+            </div>
+            <div class="col mt-2">
+              <div class="form-group">
+                <button type="button" class="btn btn-success btn-sm ml-2 " (click)="obtenerDatoGramaje()">
+                  Agregar</button>
+                <button type="button" class="btn btn-danger btn-sm ml-2 " (click)="mostrar()">Cerrar </button>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- fin datooooos -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="responsable">Responsable del registro</label>
+                <input type="text" class="form-control" id="responsable" name="responsable" #responsable="ngModel"
+                  [(ngModel)]="gramaje.responsable" required disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mt-2">
+              <!-- <h5>Resumen de datos</h5> -->
+              <div class="form-group">
+                <label for="fechaGramaje">Fecha</label>
+                <input type="date" class="form-control" id="fechaGramaje" name="fecha" #fecha="ngModel"
+                  min="{{fecha_actual}}" [(ngModel)]="gramaje.fecha" required>
+              </div>
+            </div>
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="incremento">Incremento</label>
+                <input type="text" class="form-control" id="incremento" placeholder="5" name="incremento"
+                  #incremento="ngModel" [(ngModel)]="gramaje.incremento" required>
+              </div>
+            </div>
+          
+          </div>
+          <div class="row">
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="dias_siembra">Dias siembra</label>
+                <input type="text" class="form-control" id="dias_siembra" placeholder="40" name="dias_siembra"
+                  #dias_siembra="ngModel" [(ngModel)]="gramaje.dias_siembra" required>
+              </div>
+            </div>
+            <!--
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="costo">Costo</label>
+                <input type="number" class="form-control" id="costo" placeholder="12.4" name="costo"
+                  #costo="ngModel" [(ngModel)]="gramaje.costo" required>
+              </div>
+            </div>-->
+          </div>
+
+
+          <div class="form-group">
+            <label for="detalle">Detalle</label>
+            <textarea class="form-control" id="detalle" rows="6" placeholder="(Opcional)" name="detalle"
+              #detalle="ngModel" [(ngModel)]="gramaje.detalle"></textarea>
+          </div>
+
+
+          <!-- <button type="submit" class="btn btn-primary"[disabled]="biomasaForm.invalid">Registrar</button> -->
+        </form>
+      </div>
+      <div class="modal-footer">
+
+        <button *ngIf="accion == 'Registrar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="gramajeForm.invalid" (click)="guardarGramaje()">Guardar Registro</button>
+        <button *ngIf="accion == 'Editar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="gramajeForm.invalid" (click)="editarGramaje()">Editar Registro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal ALIMENTO -->
+<div class="modal fade " id="modalAlimento" tabindex="-1" role="dialog" aria-labelledby="modalAlimentoLabel"
+  aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAlimentoLabel">Registro de Alimento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="modal-body">
+        <form class="card" #alimentoForm="ngForm">
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="responsable">Responsable del registro</label>
+                <input type="text" class="form-control" id="responsable" name="responsable" #responsable="ngModel"
+                  [(ngModel)]="alimento.responsable" required disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mt-2">
+              <!-- <h5>Resumen de datos</h5> -->
+              <div class="form-group">
+                <label for="fechaAlimento">Fecha</label>
+                <input type="date" class="form-control" id="fechaAlimento" name="fecha" #fecha="ngModel"
+                  min="{{fecha_actual}}" [(ngModel)]="alimento.fecha" required>
+              </div>
+            </div>
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="tipo">Tipo</label>
+                <input type="text" class="form-control" id="tipo" placeholder="Comida" name="tipo" #tipo="ngModel"
+                  [(ngModel)]="alimento.tipo" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="cantidadAlim">Cantidad de sacos</label>
+                <input type="text" class="form-control" id="cantidadAlim" placeholder="5" name="cantidadAlimento"
+                  #cantidadAlimento="ngModel" [(ngModel)]="alimento.cantidad" (ngModelChange)="obtenerCosto($event)" required>
+              </div>
+            </div>
+            <div class="col mt-2">
+              <div class="form-group">
+                <label for="costo">Costo USD</label>
+                <input type="number" class="form-control" id="costo" placeholder="0" name="costo" #costo="ngModel"
+                  [(ngModel)]="alimento.costo"  required disabled >
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="detalle">Detalle</label>
+            <textarea class="form-control" id="detalle" rows="6" placeholder="(Opcional)" name="detalle"
+              #detalle="ngModel" [(ngModel)]="alimento.detalle"></textarea>
+          </div>
+
+
+          <!-- <button type="submit" class="btn btn-primary"[disabled]="biomasaForm.invalid">Registrar</button> -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="accion == 'Registrar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="alimentoForm.invalid" (click)="guardarAlimento()">Guardar Registro</button>
+        <button *ngIf="accion == 'Editar'" type="button" class="btn btn-primary" data-dismiss="modal"
+          [disabled]="alimentoForm.invalid" (click)="editarAlimento()">Editar Registro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal reporte -->
+<div class="modal fade " id="modalReporte" tabindex="-1" role="dialog" aria-labelledby="modalReporteLabel"
+  aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalReporteLabel">Registro de Reporte</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col"><button class="btn btn-info " (click)="exportGramaje()">Gramaje</button></div>
+          <div class="col"><button class="btn btn-warning " (click)="exportBiomasa()">Biomasa</button></div>
+          <div class="col"><button class="btn btn-success " (click)="exportAlimento()">Alimento</button></div>
+          <div class="col"><button class="btn btn-dark " (click)="exportResumen()">Resumen</button></div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Detalle Gramaje -->
+<ng-template #modalDetalleGramaje let-modal>
+
+
+  <!-- <div class="modal-dialog " role="document"> -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalDetalleLabel">Detalle Gramaje</h5>
+      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+    </div>
+
+    <div class="modal-body">
+      <div class="row" *ngIf="produccion && produccion.fecha_cierre == null">
+        <div class="col">
+          <button class="btn btn-info btn-sm mr-2 float-right" data-toggle="modal" data-target="#modalGramaje"
+            (click)="ObtenerGramajeParaEditar()">Editar</button>
+          <button class="btn btn-danger btn-sm mr-2 float-right" (click)="alertEliminarGramaje()">Eliminar</button>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6><strong>Responsable:</strong> {{detalleGramaje[0].responsable}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Fecha:</strong> {{detalleGramaje[0].fecha}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- <div class="col">
+          <h6><strong>Peso:</strong> {{detalleGramaje[0].peso_promedio}}</h6>
+        </div> -->
+        <div class="col">
+          <h6><strong>Incremento:</strong> {{detalleGramaje[0].incremento}}</h6>
+        </div>
+        <div class="col">
+          <h6><strong>Dias siembra:</strong> {{detalleGramaje[0].dias_siembra}}</h6>
+        </div>
+      </div>
+    <!--  <div class="row">
+        <div class="col">
+          <h6><strong>Costo:</strong> ${{detalleGramaje[0].costo}}</h6>
+        </div>
+      </div> -->
+      <hr>
+      <div class="row">
+        <div class="col">
+          <p><strong>Detalle:</strong> {{detalleGramaje[0].detalle}}</p>
+        </div>
+
+      </div>
+
+      <!-- <h5 class="text-center">Datos Detalle Gramaje</h5>
+
+      <table>
+        <tr>
+          <th>Cantidad</th>
+          <th>Peso</th>
+        </tr>
+        <tr *ngFor="let item of detalleGramaje[1]">
+          <td>{{item.cantidad}}</td>
+          <td>{{item.peso}}</td>
+        </tr>
+      </table> -->
+
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+      </div> -->
+
+    <!-- </div> -->
+  </div>
+</ng-template>
+
+<!-- Modal Detalle Biomasa -->
+<ng-template #modalDetalleBiomasa let-modal>
+
+  <!-- <div class="modal-dialog " role="document"> -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalDetalleLabel">Detalle Biomasa</h5>
+      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+    </div>
+
+    <div class="modal-body">
+      <div class="row" *ngIf="produccion && produccion.fecha_cierre == null">
+        <div class="col">
+          <button class="btn btn-info btn-sm mr-2 float-right" data-toggle="modal" data-target="#modalBiomasa"
+            (click)="ObtenerBiomasaParaEditar()">Editar</button>
+          <button class="btn btn-danger btn-sm mr-2 float-right" (click)="alertEliminarBiomasa()">Eliminar</button>
+        </div>
+
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <h6><strong>Responsable:</strong> {{detalleBiomasa[0].responsable}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Fecha:</strong> {{detalleBiomasa[0].fecha}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Area Red:</strong> {{detalleBiomasa[0].area_red}}</h6>
+        </div>
+        <!-- <div class="col">
+          <h6><strong>Cantidad Total:</strong> {{detalleBiomasa[0].cantidad_total}}</h6>
+        </div> -->
+      </div>
+      <div class="row">
+        <!-- <div class="col">
+          <h6><strong>Cantidad Camarones:</strong> {{detalleBiomasa[0].cantidad_camarones}}</h6>
+        </div> -->
+        <div class="col">
+          <h6><strong>Dias siembra:</strong> {{detalleBiomasa[0].dias_siembra}}</h6>
+        </div>
+      </div>
+   <!--   <div class="row">
+        <div class="col">
+          <h6><strong>Costo:</strong> ${{detalleBiomasa[0].costo}}</h6>
+        </div>
+      </div> -->
+      <hr>
+      <div class="row">
+        <div class="col">
+          <p><strong>Detalle:</strong> {{detalleBiomasa[0].detalle}}</p>
+        </div>
+
+      </div>
+
+      <!-- <h5 class="text-center">Datos Detalle Biomasa</h5>
+
+      <table>
+        <tr>
+          <th>Cantidad</th>
+        </tr>
+        <tr *ngFor="let item of detalleBiomasa[1]">
+          <td>{{item.cantidad}}</td>
+        </tr>
+      </table> -->
+
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+      </div> -->
+
+    <!-- </div> -->
+  </div>
+</ng-template>
+
+<ng-template #modalDetalleAlimento let-modal>
+
+
+  <!-- <div class="modal-dialog " role="document"> -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalDetalleLabel">Detalle Alimento</h5>
+      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+    </div>
+
+    <div class="modal-body">
+      <div class="row" *ngIf="produccion && produccion.fecha_cierre == null">
+        <div class="col">
+          <button class="btn btn-info btn-sm mr-2 float-right" data-toggle="modal" data-target="#modalAlimento"
+            (click)="ObtenerAlimentoParaEditar()">Editar</button>
+          <button class="btn btn-danger btn-sm mr-2 float-right" (click)="alertEliminarAlimento()">Eliminar</button>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <h6><strong>Responsable:</strong> {{detalleAlimento.responsable}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Fecha:</strong> {{detalleAlimento.fecha}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Tipo alimento:</strong> {{detalleAlimento.tipo}}</h6>
+        </div>
+        <div class="col">
+          <h6><strong>Cantidad Total:</strong> {{detalleAlimento.cantidad}}</h6>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h6><strong>Costo:</strong> ${{detalleAlimento.costo}}</h6>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <p><strong>Detalle:</strong> {{detalleAlimento.detalle}}</p>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+      </div> -->
+
+    <!-- </div> -->
+  </div>
+</ng-template>

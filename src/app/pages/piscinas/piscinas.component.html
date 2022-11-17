@@ -1,0 +1,145 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Piscina</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a [routerLink]="['/inicio']" routerLinkActive="router-link-active" >Inicio</a>
+            </li>
+            <li class="breadcrumb-item active">Piscina</li>
+        </ol>
+    </div>
+  
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->
+<hr>
+<!-- <div class="card"> -->
+<h2 class="text-center mt-5 mb-5">Registro Piscinas</h2>
+
+<div class="card p-4 col-8 m-auto">
+    <form #piscinaForm="ngForm" (ngSubmit)="onSubmit(piscinaForm)">
+
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="camaroneras">Camaronera</label>
+                    <!-- <select class="form-control" id="camaroneras" name="camaronera_id" #camaronera_id="ngModel" [(ngModel)]="piscina.camaronera_id" required>
+                        <option value="0" disabled>SELECCIONE CAMARONERA</option>
+                        <option *ngFor="let camaronera of camaroneras" value="{{camaronera.id}}">{{camaronera.nombre}}</option>
+                    
+                    </select> -->
+   <select class="form-control" id="camaroneras" name="camaronera_id" #camaronera_id="ngModel" [(ngModel)]="piscina.camaronera_id" required>
+                        <option value="1" disabled>Camaronera Horconcito</option>
+                    
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Piscina 1" name="nombre" #nombre="ngModel" [(ngModel)]="piscina.nombre" required>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label for="area">Area cuadrada</label>
+                    <input type="number" class="form-control" id="area" placeholder="45.5" name="area" #area="ngModel" [(ngModel)]="piscina.area" required>
+                </div>
+            </div>
+
+        </div>
+        
+        
+        <button type="button" class="btn btn-primary float-right mr-2" [disabled]="piscinaForm.invalid" (click)="editarPiscina()" *ngIf="editar">Editar</button>
+        <button type="button" class="btn btn-danger float-right mr-2" (click)="cancelar()" *ngIf="editar">Cancelar</button>
+        <button type="submit" class="btn btn-primary float-right mr-2" [disabled]="piscinaForm.invalid" *ngIf="!editar">Registrar</button>
+    </form>
+</div>
+<h2 class="text-center mt-5 mb-3">Lista de Piscinas</h2>
+
+<div class="">
+    <div class="row" *ngIf="dataSource.data.length > 0 && paginaCargada">
+        <div class="col">
+            <div class="form-group float-left ">
+                <input type="text" class="form-control" id="buscar" placeholder="Buscar" (keyup)="filtrar($event)">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group float-right mr-2">
+                <button type="text" class="btn btn-success" (click)="export()">Exportar excel</button>
+            </div>
+            <div class="form-group float-right mr-2">
+                <button type="text" class="btn btn-danger" (click)="downloadPDF()">Exportar PDF</button>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- <div class="m-0 row justify-content-center align-items-center" *ngIf="!paginaCargada" style="height: 300px;" >
+        <img src="../../../assets/loader.svg" alt="" height="100px" width="100px">
+      </div> -->
+      <div class="alert alert-info" role="alert" *ngIf="!paginaCargada">
+        Cargando datos...
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="dataSource.data.length == 0 && paginaCargada">
+        No existen datos para mostrar
+      </div>
+    <div class="mat-elevation-z8">
+        <table id="htmlData" mat-table [dataSource]="dataSource" *ngIf="paginaCargada">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.piscina}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="area">
+                <th mat-header-cell *matHeaderCellDef> Area </th>
+                <td mat-cell *matCellDef="let element"> {{element.area}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="camaronera">
+                <th mat-header-cell *matHeaderCellDef> Camaronera </th>
+                <td mat-cell *matCellDef="let element"> {{element.camaronera}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+                <td mat-cell *matCellDef="let element"
+                    class="text-center {{(element.estado == 'Activo') ? 'text-success' : 'text-danger'}}">
+                    {{element.estado}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <button
+                        class="btn  btn-sm mr-3 {{(element.estado == 'Activo') ? 'btn-danger' : 'btn-success'}}" (click)="dialogEliminar(element.id)">{{(element.estado
+                        == 'Activo') ? 'Desactivar' : 'Activar'}}</button>
+                    <button class="btn btn-info btn-sm" (click)="obtenerPiscinaPorId(element.id)">Editar</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,85 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+  <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Usuario</h3>
+  </div>
+  <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+              <a [routerLink]="['/inicio']" routerLinkActive="router-link-active" >Inicio</a>
+          </li>
+          <li class="breadcrumb-item active">Editar usuario</li>
+      </ol>
+  </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<hr>
+<!-- <div class="card"> -->
+<h2 class="text-center mt-5 mb-5">Editar usuario</h2>
+<form class="col-xl-5 col-md-8 col-sm-12 m-auto p-5 card" #editarUsuarioForm="ngForm" (ngSubmit)="onSubmit(editarUsuarioForm)">
+      
+      <br><br>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="cedula">Cédula</label>
+            <input type="text" class="form-control" id="cedula" placeholder="1360216001" name="cedula" #cedula="ngModel" [(ngModel)]="usuario.cedula" disabled required >
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="nombres">Nombres</label>
+            <input type="text" class="form-control" id="nombres" placeholder="Juan Gomez" name="nombres" #nombres="ngModel" [(ngModel)]="usuario.nombres" required >
+          </div>
+        </div>
+      </div>        
+       
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="nick">Nick</label>
+              <input type="text" class="form-control" id="nick" placeholder="jgomez" name="nick" #nick="ngModel" [(ngModel)]="usuario.nick" required >
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="telefono">Telefono</label>
+              <input type="text" class="form-control" id="telefono" placeholder="0986553321" name="telefono" #telefono="ngModel" [(ngModel)]="usuario.telefono" required >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="tipoUsuario">Tipo de Usuario</label>
+              <select class="form-control" id="tipoUsuario" name="role_id" #role_id="ngModel" [(ngModel)]="usuario.role_id" required >
+                <option value="1">Administrador</option>
+                <option value="2">Empleado</option>
+                <option value="3">Proveedor</option>
+                <option value="4">Propietario</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="estado">Estado</label>
+              <select class="form-control" id="estado" name="estado_id" #estado_id="ngModel" [(ngModel)]="usuario.estado_id" required>
+                <option value="1">Activo</option>
+                <option value="2">Inactivo</option>            
+              </select>
+            </div>
+          </div>
+        </div>
+                    
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea class="form-control" id="descripcion" rows="6" placeholder="(Opcional)" name="descripcion" #descripcion="ngModel" [(ngModel)]="usuario.descripcion" required ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary"[disabled]="editarUsuarioForm.invalid">Editar</button>
+      </form>
+    <!-- </div> -->

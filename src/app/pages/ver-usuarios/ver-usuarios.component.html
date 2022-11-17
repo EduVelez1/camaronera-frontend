@@ -1,0 +1,116 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+  <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Usuario</h3>
+  </div>
+  <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+              <a [routerLink]="['/inicio']" routerLinkActive="router-link-active" >Inicio</a>
+          </li>
+          <li class="breadcrumb-item active">Lista de usuarios</li>
+      </ol>
+  </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<hr>
+
+<h2 class="text-center mt-5 mb-5">Lista de usuarios</h2>
+
+<!-- <div class="alert alert-warning" role="alert" *ngIf="dataSource.data.length == 0" >
+  This is a warning alert—check it out!
+</div> -->
+<div class="" >
+
+  <div class="" *ngIf="dataSource.data.length > 0 && paginaCargada">
+
+    
+    <div class="form-group float-left col-3">
+      <input type="text" class="form-control" id="buscar" placeholder="Buscar" (keyup)="filtrar($event)">
+    </div>
+    <div class="form-group float-right mr-2">
+      <button type="text" class="btn btn-success" (click)="export()">Exportar excel</button>
+    </div>
+    <div class="form-group float-right mr-2">
+      <button type="text" class="btn btn-danger" (click)="downloadPDF()">Exportar PDF</button>
+  </div>
+  </div>
+  <div class="clearfix"></div>
+
+  <!-- <div class="m-0 row justify-content-center align-items-center" *ngIf="!paginaCargada" style="height: 300px;">
+    <img src="../../../assets/loader.svg" alt="" height="100px" width="100px">
+  </div> -->
+    <div class="alert alert-info" role="alert" *ngIf="!paginaCargada" >
+      Cargando datos...
+    </div>  
+    <div class="alert alert-warning" role="alert" *ngIf="dataSource.data.length == 0 && paginaCargada" >
+      No existen datos para mostrar
+    </div>
+
+  <div class="" >
+
+    <div class="mat-elevation-z8">
+      <table id="htmlData" mat-table [dataSource]="dataSource" *ngIf="paginaCargada">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef> Cedula </th>
+          <td mat-cell *matCellDef="let element"> {{element.cedula}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="nombres">
+          <th mat-header-cell *matHeaderCellDef> Nombres </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="correo">
+          <th mat-header-cell *matHeaderCellDef> Correo </th>
+          <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef> Telefono </th>
+          <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+          <td mat-cell *matCellDef="let element"> {{element.role.tipo}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+          <td mat-cell *matCellDef="let element"
+            class="text-center {{(element.estado.id == 1) ? 'text-success' : 'text-danger'}}">{{element.estado.tipo}}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button class="btn  btn-sm mr-3 {{(element.estado.id == 1) ? 'btn-danger' : 'btn-success'}}"
+              (click)="dialogEliminar(element.id)">{{(element.estado.id == 1) ? 'Desactivar' : 'Activar'}}</button>
+            <a class="btn btn-info btn-sm" [routerLink]="['/editar-usuario', element.id]"
+              routerLinkActive="router-link-active">Editar</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

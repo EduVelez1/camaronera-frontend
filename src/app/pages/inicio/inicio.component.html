@@ -1,0 +1,186 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Panel principal</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a [routerLink]="['/inicio']" routerLinkActive="router-link-active" >Inicio</a>
+            </li>
+            <li class="breadcrumb-item active">Principal</li>
+        </ol>
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<hr>
+<h2>Usuarios</h2>
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                            src="../assets/images/icon/staff.png" alt="Income" /></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total Empleados</h6>
+                        <h2 class="m-t-0">{{cantidadUsuario ? cantidadUsuario.empleados : 0}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                            src="../assets/images/icon/staff.png" alt="Income" /></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total Proveedores</h6>
+                        <h2 class="m-t-0">{{cantidadUsuario ? cantidadUsuario.proveedores : 0}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                            src="../assets/images/icon/staff.png" alt="Income" /></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total Administradores</h6>
+                        <h2 class="m-t-0">{{cantidadUsuario ? cantidadUsuario.administradores : 0}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                            src="../assets/images/icon/staff.png" alt="Income" /></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total Propietarios </h6>
+                        <h2 class="m-t-0">{{cantidadUsuario ? cantidadUsuario.propietarios : 0}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Producciones</h2>
+<div class="" *ngIf="dataSource.data.length > 0 && paginaCargada">
+
+    <div class="form-group float-left">
+        <input type="text" class="form-control" id="buscar" placeholder="Buscar" (keyup)="filtrar($event)">
+    </div>
+    <div class="form-group float-right mr-2">
+        <button type="text" class="btn btn-success" (click)="export()">Exportar excel</button>
+    </div>
+    <div class="form-group float-right mr-2">
+        <button type="text" class="btn btn-danger" (click)="downloadPDF()">Exportar PDF</button>
+    </div>
+   
+    <div class="clearfix"></div>
+</div>
+
+
+<!-- <div class="m-0 row justify-content-center align-items-center" *ngIf="!paginaCargada" style="height: 300px;" >
+    <img src="../../../assets/loader.svg" alt="" height="100px" width="100px">
+  </div> -->
+<div class="alert alert-info" role="alert" *ngIf="!paginaCargada">
+    Cargando datos...
+</div>
+<div class="alert alert-warning" role="alert" *ngIf="dataSource.data.length == 0 && paginaCargada">
+    No existen datos para mostrar
+</div>
+<div class="mat-elevation-z8">
+    <!-- <table mat-table [dataSource]="dataSource" *ngIf="paginaCargada"> -->
+        <table id="htmlData" mat-table [dataSource]="dataSource" *ngIf="paginaCargada">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="fecha_apertura">
+                <th mat-header-cell *matHeaderCellDef> Fecha apertura </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha_apertura | amLocale: 'es' | amDateFormat:'DD MMMM YYYY'}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="fecha_cierre">
+                <th mat-header-cell *matHeaderCellDef> Fecha cierre </th>
+                <td mat-cell *matCellDef="let element"> {{(element.fecha_cierre == null) ? 'Sin fecha de cierre' :
+                    element.fecha_cierre |  amLocale: 'es' | amDateFormat:'DD MMMM YYYY'}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="piscina">
+                <th mat-header-cell *matHeaderCellDef> Piscina </th>
+                <td mat-cell *matCellDef="let element"> {{element.piscina}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="camaronera">
+                <th mat-header-cell *matHeaderCellDef> Camaronera </th>
+                <td mat-cell *matCellDef="let element"> {{element.camaronera}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <!-- <ng-container matColumnDef="propietario">
+                <th mat-header-cell *matHeaderCellDef> Propietario </th>
+                <td mat-cell *matCellDef="let element"> {{element.propietario}} </td>
+            </ng-container> -->
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="larva">
+                <th mat-header-cell *matHeaderCellDef> Larva </th>
+                <td mat-cell *matCellDef="let element"> {{element.larva}} </td>
+            </ng-container>
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="costo_larva">
+                <th mat-header-cell *matHeaderCellDef> Costo Larva </th>
+                <td mat-cell *matCellDef="let element"> {{element.costo_larva}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let element"
+                    class="{{(element.fecha_cierre == null) ? 'text-success' : 'text-danger'}}"> {{(element.fecha_cierre
+                    ==
+                    null) ? 'Abierta' : 'Cerrada'}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <button class="btn btn-danger btn-sm mr-2 text-white" (click)="dialogEliminar(element.id)">Cerrar</button>
+                    <a class="btn btn-info btn-sm " [routerLink]="['/detalle', element.id]"
+                        routerLinkActive="router-link-active">Administrar</a>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/frontend-camaronera",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
